@@ -315,7 +315,21 @@ angular
   .run(['alertService', '$rootScope', function(alertService, $rootScope) {
     $rootScope.$removeAlert = alertService.removeAlert();
   }])
-  .config(['$provide', function($provide) {
+  .factory('errbitErrorInterceptor', function($q){
+    return {
+      responseError: function (rejection) {
+        var airbrake = new airbrakeJs.Client({projectId: 1, projectKey: '48f4d0be704fafd7ed7b4fdf2d2119d9', host: 'http://errbit.tegonal.com'});
+        airbrake.addFilter(function (notice) {
+          notice.context.environment = 'production';
+          return notice;
+        });
+        airbrake.notify('HTTP error');
+        return $q.reject(rejection);
+      }
+    };
+  })
+  .config(['$provide', '$httpProvider', function($provide, $httpProvider) {
+    $httpProvider.interceptors.push('errbitErrorInterceptor');
     $provide.decorator('$exceptionHandler', ['$log', '$injector',
       function($log, $injector) {
         return function(exception) {
