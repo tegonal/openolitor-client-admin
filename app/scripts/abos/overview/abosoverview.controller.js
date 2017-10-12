@@ -153,7 +153,7 @@ angular.module('openolitor-admin')
           return !$scope.checkboxes.checkedAny;
         }
       }, {
-        label: gettext('Email versenden'),
+        label: gettext('E-Mail versenden'),
         noEntityText: true,
         iconClass: 'glyphicon glyphicon-envelope',
         onExecute: function() {
@@ -173,6 +173,23 @@ angular.module('openolitor-admin')
             EmailUtil.toMailToBccLink(emailAddresses);
             return true;
           });
+        },
+        isDisabled: function() {
+          return !$scope.checkboxes.checkedAny;
+        }
+      }, {
+        label: gettext('E-Mail Formular'),
+        noEntityText: true,
+        iconClass: 'glyphicon glyphicon-pencil',
+        onExecute: function() {
+          $scope.kundeIdsMailing = _($scope.filteredEntries)
+            .keyBy('id')
+            .at($scope.checkboxes.ids)
+            .map('kundeId')
+            .value();
+
+          $scope.showCreateEMailDialog = true;
+          return true;
         },
         isDisabled: function() {
           return !$scope.checkboxes.checkedAny;
@@ -204,6 +221,14 @@ angular.module('openolitor-admin')
 
       $scope.closeCreateRechnungenDialogFunct = function() {
         return $scope.closeCreateRechnungenDialog;
+      };
+
+      $scope.closeCreateEMailDialog = function() {
+        $scope.showCreateEMailDialog = false;
+      };
+
+      $scope.closeCreateEMailDialogFunct = function() {
+        return $scope.closeCreateEMailDialog;
       };
 
       $scope.$watch('search.query', function() {

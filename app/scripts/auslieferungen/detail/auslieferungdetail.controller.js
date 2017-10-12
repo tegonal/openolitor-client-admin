@@ -7,10 +7,10 @@ angular.module('openolitor-admin')
     '$route', '$routeParams',
     'DepotAuslieferungenModel', 'TourAuslieferungenModel',
     'PostAuslieferungenModel', 'NgTableParams', 'AUSLIEFERUNGSTATUS', 'msgBus', 'DataUtil',
-    'VorlagenService', 'localeSensitiveComparator', 'gettext',
+    'ReportvorlagenService', 'localeSensitiveComparator', 'gettext',
     function($q, $scope, $filter, $route, $routeParams, DepotAuslieferungenModel,
       TourAuslieferungenModel, PostAuslieferungenModel, NgTableParams,
-      AUSLIEFERUNGSTATUS, msgBus, DataUtil, VorlagenService, localeSensitiveComparator, gettext) {
+      AUSLIEFERUNGSTATUS, msgBus, DataUtil, ReportvorlagenService, localeSensitiveComparator, gettext) {
 
       $scope.loading = false;
       $scope.model = {};
@@ -35,7 +35,7 @@ angular.module('openolitor-admin')
       }
 
       $scope.projektVorlagen = function() {
-        return VorlagenService.getVorlagen('Vorlage'+$scope.modelType+$scope.vorlageTyp);
+        return ReportvorlagenService.getVorlagen('Vorlage'+$scope.modelType+$scope.vorlageTyp);
       };
 
       $scope.statusL = [];

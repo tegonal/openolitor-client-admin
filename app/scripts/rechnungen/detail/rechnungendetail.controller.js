@@ -8,13 +8,13 @@ angular.module('openolitor-admin')
     '$location', '$uibModal', 'gettext', 'RechnungenDetailModel',
     'EnumUtil', 'API_URL', 'msgBus', '$log', 'moment', 'KundenOverviewModel',
     'KundenDetailModel',
-    'RECHNUNGSTATUS', 'FileUtil', 'DataUtil', 'VorlagenService',
+    'RECHNUNGSTATUS', 'FileUtil', 'DataUtil', 'ReportvorlagenService',
     function($scope, $rootScope, $filter, $routeParams, $http, $location,
       $uibModal,
       gettext,
       RechnungenDetailModel, EnumUtil, API_URL,
       msgBus, $log, moment, KundenOverviewModel, KundenDetailModel,
-      RECHNUNGSTATUS, FileUtil, DataUtil, VorlagenService) {
+      RECHNUNGSTATUS, FileUtil, DataUtil, ReportvorlagenService) {
 
       var defaults = {
         model: {
@@ -28,7 +28,7 @@ angular.module('openolitor-admin')
       };
 
       $scope.projektVorlagen = function() {
-        return VorlagenService.getVorlagen('VorlageRechnung');
+        return ReportvorlagenService.getVorlagen('VorlageRechnung');
       };
 
       $scope.loading = false;

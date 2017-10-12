@@ -4,9 +4,9 @@
  */
 angular.module('openolitor-admin')
   .controller('PersonenOverviewController', ['$q', '$scope', '$filter', '$location',
-    'PersonenOverviewModel', 'NgTableParams', 'KundentypenService', 'OverviewCheckboxUtil', 'VorlagenService', 'localeSensitiveComparator', 'FilterQueryUtil', 'EmailUtil', 'lodash', 'gettext',
+    'PersonenOverviewModel', 'NgTableParams', 'KundentypenService', 'OverviewCheckboxUtil', 'ReportvorlagenService', 'localeSensitiveComparator', 'FilterQueryUtil', 'EmailUtil', 'lodash', 'gettext',
     function($q, $scope, $filter, $location, PersonenOverviewModel, NgTableParams,
-      KundentypenService, OverviewCheckboxUtil, VorlagenService, localeSensitiveComparator, FilterQueryUtil, EmailUtil, _, gettext) {
+      KundentypenService, OverviewCheckboxUtil, ReportvorlagenService, localeSensitiveComparator, FilterQueryUtil, EmailUtil, _, gettext) {
 
       $scope.entries = [];
       $scope.filteredEntries = [];
@@ -56,7 +56,7 @@ angular.module('openolitor-admin')
       });
 
       $scope.projektVorlagen = function() {
-        return VorlagenService.getVorlagen('VorlagePersonenbrief');
+        return ReportvorlagenService.getVorlagen('VorlagePersonenbrief');
       };
 
       // watch for data checkboxes
@@ -70,8 +70,20 @@ angular.module('openolitor-admin')
         $scope.showGenerateReport = false;
       };
 
+      $scope.closeBerichtFunct= function() {
+        return $scope.closeBericht;
+      };
+
+      $scope.closeCreateEMailDialog = function() {
+        $scope.showCreateEMailDialog = false;
+      };
+
+      $scope.closeCreateEMailDialogFunct = function() {
+        return $scope.closeCreateEMailDialog;
+      };
+
       $scope.actions = [{
-        label: gettext('Email versenden'),
+        label: gettext('E-Mail versenden'),
         noEntityText: true,
         iconClass: 'glyphicon glyphicon-envelope',
         onExecute: function() {
@@ -82,6 +94,23 @@ angular.module('openolitor-admin')
             .value();
 
           EmailUtil.toMailToBccLink(emailAddresses);
+          return true;
+        },
+        isDisabled: function() {
+          return !$scope.checkboxes.checkedAny;
+        }
+      }, {
+        label: gettext('E-Mail Formular'),
+        noEntityText: true,
+        iconClass: 'glyphicon glyphicon-pencil',
+        onExecute: function() {
+          $scope.kundeIdsMailing = _($scope.filteredEntries)
+            .keyBy('id')
+            .at($scope.checkboxes.ids)
+            .map('kundeId')
+            .value();
+
+          $scope.showCreateEMailDialog = true;
           return true;
         },
         isDisabled: function() {
