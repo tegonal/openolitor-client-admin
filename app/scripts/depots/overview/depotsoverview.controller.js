@@ -77,7 +77,7 @@ angular.module('openolitor-admin')
           return !$scope.checkboxes.checkedAny;
         }
       }, {
-        label: gettext('Email an Kunden versenden'),
+        label: gettext('E-Mail an Kunden versenden'),
         noEntityText: true,
         iconClass: 'glyphicon glyphicon-envelope',
         onExecute: function() {
@@ -85,6 +85,18 @@ angular.module('openolitor-admin')
             var emailAddresses = _.map(personen, 'email');
             EmailUtil.toMailToBccLink(emailAddresses);
           });
+
+          return true;
+        },
+        isDisabled: function() {
+          return !$scope.checkboxes.checkedAny;
+        }
+      }, {
+        label: gettext('E-Mail Formular'),
+        noEntityText: true,
+        iconClass: 'glyphicon glyphicon-envelope',
+        onExecute: function() {
+          //TODO OO-762 using Mail-Service functionality on Overview
 
           return true;
         },

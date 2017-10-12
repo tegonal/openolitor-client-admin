@@ -229,9 +229,10 @@ angular.module('openolitor-admin')
         },
         noEntityText: true
       }, {
-        label: gettext('Email versand*'),
+        label: gettext('Rechung per E-Mail verschicken'),
         iconClass: 'fa fa-envelope-o',
         onExecute: function() {
+          //TODO OO-762 using Mail-Service functionality on Overview
           return false;
         },
         isDisabled: function() {

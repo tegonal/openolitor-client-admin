@@ -190,9 +190,10 @@ angular.module('openolitor-admin')
           $location.path('/kunden').search('q', 'id=' + result.join());
         }
       }, {
-        label: gettext('Email Versand*'),
+        label: gettext('Rechungen per E-Mail verschicken'),
         iconClass: 'fa fa-envelope-o',
         onExecute: function() {
+          //TODO OO-762 using Mail-Service functionality on Overview
           return false;
         },
         isDisabled: function() {
