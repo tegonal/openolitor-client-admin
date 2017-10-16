@@ -14,9 +14,10 @@ angular.module('openolitor-admin')
       };
       $scope.title = $scope.typ.replace('Vorlage', '');
 
-      $scope.addVorlage = function() {
+      $scope.addVorlage = function(templateType) {
         var vorlage = new MailvorlagenModel($scope.template);
-        vorlage.$save();
+        $scope.selectedVorlage = vorlage;
+        $scope.selectedVorlage.templateType = templateType;
         $scope.template.creating = true;
       };
 
@@ -84,7 +85,7 @@ angular.module('openolitor-admin')
           getData: function(params) {
             //concat with default vorlage
             var values = [{
-              name: gettext('Standardvorlage'),
+              templateName: gettext('Standardvorlage'),
               default: true
             }];
 
