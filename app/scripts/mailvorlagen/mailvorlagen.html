@@ -6,7 +6,7 @@
       </div>
       <form name="createVorlageForm" class="navbar-form pull-right">
         <div class="form-group" ng-class="{ 'has-error' : createVorlageForm.name.$invalid && createVorlageForm.name.$touched }" >
-          <a ng-disabled="createVorlageForm.$invalid || template.creating" role="button" ng-href="" ng-click="addVorlage(title)" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> '{{title|translate}}' <span translate>Vorlage neu Erstellen</span></a>
+          <a ng-disabled="createVorlageForm.$invalid || template.creating" role="button" ng-href="" ng-click="addVorlage()" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> '{{title|translate}}' <span translate>Vorlage neu Erstellen</span></a>
         </div>
       </form>
     </h3>

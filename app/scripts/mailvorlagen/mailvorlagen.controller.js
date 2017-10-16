@@ -10,14 +10,13 @@ angular.module('openolitor-admin')
     function($scope, MailvorlagenModel, msgBus, DataUtil, lodash, NgTableParams,
       gettext, Upload, API_URL, FileUtil, MailvorlagenService) {
       $scope.template = {
-        typ: $scope.typ
+        templateType: $scope.typ
       };
       $scope.title = $scope.typ.replace('Vorlage', '');
 
-      $scope.addVorlage = function(templateType) {
+      $scope.addVorlage = function() {
         var vorlage = new MailvorlagenModel($scope.template);
         $scope.selectedVorlage = vorlage;
-        $scope.selectedVorlage.templateType = templateType;
         $scope.template.creating = true;
       };
 
