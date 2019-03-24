@@ -3,20 +3,21 @@
 /**
  */
 angular.module('openolitor-admin')
-  .controller('KundenDetailController', ['$scope', '$rootScope', '$filter',
+  .controller('KundenDetailController', ['$q', '$scope', '$rootScope', '$filter',
     '$routeParams', 'KundenDetailService',
     '$location', '$uibModal', 'gettext', 'KundenDetailModel', 'ROLLE',
     'PendenzDetailModel', 'KundenOverviewModel',
     'KundentypenService', 'PersonCategoriesService' ,'alertService',
     'EnumUtil', 'DataUtil', 'PENDENZSTATUS', 'ANREDE', 'PAYMENT_TYPES', 'ABOTYPEN', 'API_URL',
     'msgBus', 'lodash', 'KundenRechnungenModel', 'ooAuthService', 'EmailUtil',
-    function($scope, $rootScope, $filter, $routeParams, KundenDetailService, $location,
+    function($q, $scope, $rootScope, $filter, $routeParams, KundenDetailService, $location,
       $uibModal, gettext, KundenDetailModel, ROLLE, PendenzDetailModel,
       KundenOverviewModel, KundentypenService, PersonCategoriesService, alertService, EnumUtil, DataUtil,
       PENDENZSTATUS, ANREDE, PAYMENT_TYPES, ABOTYPEN, API_URL,
       msgBus, lodash, KundenRechnungenModel, ooAuthService, EmailUtil) {
       $rootScope.viewId = 'D-Kun';
 
+      $scope.model = {};
       var defaults = {
         model: {
           id: undefined,
@@ -74,7 +75,32 @@ angular.module('openolitor-admin')
           }
         },
         onExecute: function() {
-          return $scope.save();
+          var promises = [];
+            angular.forEach($scope.kunde.ansprechpersonen, function(person) {
+                var dataPromise = KundenDetailService.isUniqueEmail(person.email)
+                .then(function (response) {
+                    if (response.data.id !== person.id){
+                        return false; 
+                    } else {
+                        return true; 
+                    }
+                });
+                promises.push(dataPromise);
+          });
+
+          $q.all(promises).then(data => {
+              var allUnique = true;
+              angular.forEach(data, function(d) {
+                  if (!d) {
+                    allUnique = false;
+                  }
+              });
+              if (!allUnique){
+                alertService.addAlert('error', gettext('Profiles cannot be saved. One or more of the email addresses that you are trying to save exist already in the system.'));
+              } else {
+                return $scope.save();
+              }
+          });
         }
       }, {
         label: gettext('E-Mail an alle Ansprechpersonen'),

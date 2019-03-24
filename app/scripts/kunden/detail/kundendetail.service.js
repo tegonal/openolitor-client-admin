@@ -10,7 +10,8 @@ angular.module('openolitor-admin')
         disableLogin: disableLogin,
         enableLogin: enableLogin,
         sendEinladung: sendEinladung,
-        changeRolle: changeRolle
+        changeRolle: changeRolle,
+        isUniqueEmail : isUniqueEmail
       };
 
       return service;
@@ -33,6 +34,10 @@ angular.module('openolitor-admin')
 
       function changeRolle(kundeId, personId, rolle) {
         return $http.post(API_URL + 'kunden/' + kundeId + '/personen/' + personId + '/aktionen/rollewechseln', '"' + rolle + '"');
+      };
+
+      function isUniqueEmail(email) {
+        return $http.get(API_URL + 'kunden/isEmailUnique/' + email);
       };
     }
   ]);
