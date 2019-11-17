@@ -7,6 +7,11 @@ angular.module('openolitor-admin')
     return $resource(API_URL + 'produzenten/:id:exportType', {
       id: '@id'
     }, {
-      'exportODS': exportODSModuleFunction
+      'exportODS': exportODSModuleFunction ,
+      'getProduzenten': {
+        method: 'GET',
+        isArray: true,
+        url: API_URL + 'produzenten'
+      },
     });
   }]);
